@@ -4,7 +4,7 @@
 #include <string.h>
 #include "../leaf/leaf.h"
 
-#define TOTAL_OPTIONS 6
+#define TOTAL_OPTIONS 5
 #define MEMPOOL_SIZE 1024 * 24
 #define SET_VAR(var,input,t,size) memcpy(&var,input,sizeof(t)); size -= sizeof(t); input += sizeof(t);
 
@@ -118,48 +118,6 @@ int LLVMFuzzerTestOneInput(const uint8_t *Data, size_t Size)
                     }
 
                     tTwoZero_free(&tz);
-                }
-                break;
-            case 5:
-                {
-                    tPoly poly;
-
-                    tPoly_init(&poly, 255, &leaf);
-
-                    int intVal;
-                    uint8_t u8Val;
-                    float floatVal;
-                    uint8_t opt;
-
-                    while(Size > 1) {
-                        SET_VAR(opt, inputData, uint8_t, Size);
-                        switch (opt) {
-                            case 0:
-                                if (Size >= 5) {
-                                    SET_VAR(intVal, inputData, int, Size);
-                                    SET_VAR(u8Val, inputData, uint8_t, Size);
-                                    tPoly_noteOn(&poly, intVal, u8Val);
-                                }
-                                break;
-                            case 1:
-                                if (Size >= 1) {
-                                    SET_VAR(u8Val, inputData, uint8_t, Size);
-                                    tPoly_noteOff(&poly, u8Val);
-                                }
-                                break;
-                            case 2:
-                                if (Size >= 4) {
-                                    SET_VAR(floatVal, inputData, float, Size);
-                                    tPoly_setPitchBend(&poly, floatVal);
-                                }
-                                break;
-                        }
-                        tPoly_tickPitch(&poly);
-                        tPoly_tickPitchBend(&poly);
-                        tPoly_tickPitchGlide(&poly);
-                    }
-
-                    tPoly_free(&poly);
                 }
                 break;
         }
