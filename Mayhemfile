@@ -1,0 +1,6 @@
+project: leaf
+target: leaf-fuzzer
+
+cmds:
+    - cmd: ./leaf-fuzzer
+      libfuzzer: true
